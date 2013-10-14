@@ -8,6 +8,10 @@ This program drives an Adafruit Trinket (5v) controlling a PowerSwitch Tail 2
 The general operation is that food is dispensed for X duration, every Y
 interval seconds (msec). The goal is small feedings, through out the day.
 
+To use this with the PowerSwitch, connect PowerSwitch terminal #1 (+IN) to the
+Trinket GPIO pin #1 (the one wired in parallel with the LED) and PowerSwitch
+terminal #2 (-IN) to Trinket ground pin (GND).
+
 */
 
 int LED = 1; // blink 'digital' pin 1 - AKA the built in red LED
