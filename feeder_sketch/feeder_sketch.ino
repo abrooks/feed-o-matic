@@ -9,13 +9,13 @@ The general operation is that food is dispensed for X duration, every Y
 interval seconds (msec). The goal is small feedings, through out the day.
 
 To use this with the PowerSwitch, connect PowerSwitch terminal #1 (+IN) to the
-Trinket GPIO pin #1 (the one wired in parallel with the LED) and PowerSwitch
-terminal #2 (-IN) to Trinket ground pin (GND).
+Trinket GPIO pin #0 and PowerSwitch terminal #2 (-IN) to Trinket ground pin (GND).
 
 */
 
-int LED = 1; // blink 'digital' pin 1 - AKA the built in red LED
-int LED_STATE = LOW;
+int PST = 0; // 'digital' pin 0
+int LED = 1; // 'digital' pin 1 - AKA the built in red LED
+int STATE = LOW;
 
 unsigned long FEEDING_INTERVAL = 1 * 60 * 60 * 1000;
 unsigned long FEEDING_DURATION = 6 * 1000;
@@ -23,7 +23,9 @@ unsigned long FEEDING_DURATION = 6 * 1000;
 void setup() {
   // initialize the digital pin as an output.
   pinMode(LED, OUTPUT);
-  digitalWrite(LED, LED_STATE);
+  pinMode(PST, OUTPUT);
+  digitalWrite(LED, STATE);
+  digitalWrite(PST, STATE);
 }
 
 void loop() {
@@ -36,12 +38,16 @@ void loop() {
   unsigned long now_msec = millis();
 
   if((now_msec % FEEDING_INTERVAL) < FEEDING_DURATION) {
-    if(LED_STATE == LOW) {
-      digitalWrite(LED, LED_STATE=HIGH);
+    if(STATE == LOW) {
+      STATE = HIGH;
+      digitalWrite(LED, STATE);
+      digitalWrite(PST, STATE);
     }
   } else {
-    if(LED_STATE == HIGH) {
-      digitalWrite(LED, LED_STATE=LOW);
+    if(STATE == HIGH) {
+      STATE = LOW;
+      digitalWrite(LED, STATE);
+      digitalWrite(PST, STATE);
     }
   }
 }
