@@ -1,34 +1,45 @@
 /*
- Blink
- Turns on an LED on for one second, then off for one second, repeatedly.
  
- This example code is in the public domain.
- 
- To upload to your Gemma or Trinket:
- 1) Select the proper board from the Tools->Board Menu
- 2) Select USBtinyISP from the Tools->Programmer
- 3) Plug in the Gemma/Trinket, make sure you see the green LED lit
- 4) For windows, install the USBtiny drivers
- 5) Press the button on the Gemma/Trinket - verify you see
- the red LED pulse. This means it is ready to receive data
- 6) Click the upload button above within 10 seconds
- */
+feed-o-matic - periodic interval pet feeder
 
-int led = 1; // blink 'digital' pin 1 - AKA the built in red LED
+This program drives an Adafruit Trinket (5v) controlling a PowerSwitch Tail 2
+(opto-isolated, 3-12v switched, inline AC relay).
 
-// the setup routine runs once when you press reset:
+The general operation is that food is dispensed for X duration, every Y
+interval seconds (msec). The goal is small feedings, through out the day.
+
+*/
+
+int LED = 1; // blink 'digital' pin 1 - AKA the built in red LED
+int LED_STATE = LOW;
+
+unsigned long FEEDING_INTERVAL = 1 * 60 * 60 * 1000;
+unsigned long FEEDING_DURATION = 6 * 1000;
+
 void setup() {
   // initialize the digital pin as an output.
-  pinMode(led, OUTPUT);
-
+  pinMode(LED, OUTPUT);
+  digitalWrite(LED, LED_STATE);
 }
 
-// the loop routine runs over and over again forever:
 void loop() {
-  digitalWrite(led, HIGH); 
-  delay(3000);
-  digitalWrite(led, LOW);
-  delay(500);
+
+  // 32-bits of milliseconds will overflow every 49.7 days.
+  // This is okay as:
+  //   (A) we expect to be reset regularly for nighttime feedings and
+  //   (B) since feeding is at the top of the interval, the overflow event
+  //       means a early feeding once every 49.7 days -- not a big deal.
+  unsigned long now_msec = millis();
+
+  if((now_msec % FEEDING_INTERVAL) < FEEDING_DURATION) {
+    if(LED_STATE == LOW) {
+      digitalWrite(LED, LED_STATE=HIGH);
+    }
+  } else {
+    if(LED_STATE == HIGH) {
+      digitalWrite(LED, LED_STATE=LOW);
+    }
+  }
 }
 
 
