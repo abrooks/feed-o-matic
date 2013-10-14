@@ -20,7 +20,7 @@ avrdude -c usbtiny -p attiny85 -D -U flash:w:trinketblink.hex
 ```
 
 This appears to be a problem with the erase timing (something the Adafruit
-provided avrdude.conf) is specifically trying to address. The `-D` in the
+provided avrdude.conf is specifically trying to address). The `-D` in the
 second command skips the erase phase (the only part of the first command that
 will succeed).
 
