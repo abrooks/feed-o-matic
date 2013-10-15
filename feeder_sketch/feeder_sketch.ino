@@ -17,8 +17,8 @@ int PST = 0; // 'digital' pin 0
 int LED = 1; // 'digital' pin 1 - AKA the built in red LED
 int STATE = LOW;
 
-unsigned long FEEDING_INTERVAL = 1 * 60 * 60 * 1000;
-unsigned long FEEDING_DURATION = 6 * 1000;
+unsigned long FEEDING_INTERVAL = 1L * 60L * 60L * 1000L;
+unsigned long FEEDING_DURATION = 6L * 1000L;
 
 void setup() {
   // initialize the digital pin as an output.
