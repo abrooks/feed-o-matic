@@ -20,6 +20,11 @@ int STATE = LOW;
 unsigned long FEEDING_INTERVAL = 1L * 60L * 60L * 1000L;
 unsigned long FEEDING_DURATION = 6L * 1000L;
 
+// Time correction
+unsigned long SIX_MINUTE_DURATION = 352L; // Treat seconds as millis
+unsigned long SIX_MINUTES = 6L * 60L; // Treat seconds as millis
+long SIX_MINUTE_OFFSET =  SIX_MINUTE_DURATION - SIX_MINUTES;
+
 void setup() {
   // initialize the digital pin as an output.
   pinMode(LED, OUTPUT);
@@ -37,7 +42,12 @@ void loop() {
   //       means a early feeding once every 49.7 days -- not a big deal.
   unsigned long now_msec = millis();
 
-  if((now_msec % FEEDING_INTERVAL) < FEEDING_DURATION) {
+  // Compute time adjustment based on six minute observation.
+  // Seconds are scaled down to msec for smoother time correction.
+  long six_min_adj = (now_msec / SIX_MINUTES) * SIX_MINUTE_OFFSET;
+  unsigned long now_msec_adj = now_msec + six_min_adj;
+
+  if((now_msec_adj % FEEDING_INTERVAL) < FEEDING_DURATION) {
     if(STATE == LOW) {
       STATE = HIGH;
       digitalWrite(LED, STATE);
