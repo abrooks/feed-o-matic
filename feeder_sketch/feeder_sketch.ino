@@ -20,6 +20,9 @@ int STATE = LOW;
 unsigned long FEEDING_INTERVAL = 1L * 60L * 60L * 1000L;
 unsigned long FEEDING_DURATION = 6L * 1000L;
 
+// Compensate for bootloader taking about 3 seconds at start.
+unsigned long FEEDING_START_OFFSET = 4L * 1000L;
+
 // Time correction
 unsigned long SIX_MINUTE_DURATION = 352L; // Treat seconds as millis
 unsigned long SIX_MINUTES = 6L * 60L; // Treat seconds as millis
@@ -46,8 +49,10 @@ void loop() {
   // Seconds are scaled down to msec for smoother time correction.
   long six_min_adj = (now_msec / SIX_MINUTES) * SIX_MINUTE_OFFSET;
   unsigned long now_msec_adj = now_msec + six_min_adj;
+  unsigned long intvl_msec = now_msec_adj % FEEDING_INTERVAL;
 
-  if((now_msec_adj % FEEDING_INTERVAL) < FEEDING_DURATION) {
+  if((FEEDING_START_OFFSET < intvl_msec)
+     && (intvl_msec < (FEEDING_DURATION + FEEDING_START_OFFSET))) {
     if(STATE == LOW) {
       STATE = HIGH;
       digitalWrite(LED, STATE);
