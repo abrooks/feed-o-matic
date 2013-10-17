@@ -17,8 +17,8 @@ int PST = 0; // 'digital' pin 0
 int LED = 1; // 'digital' pin 1 - AKA the built in red LED
 int STATE = LOW;
 
-unsigned long FEEDING_INTERVAL = 1L * 60L * 60L * 1000L;
-unsigned long FEEDING_DURATION = 6L * 1000L;
+unsigned long FEEDING_INTERVAL = 30L * 60L * 1000L;
+unsigned long FEEDING_DURATION = 4L * 1000L;
 
 // Compensate for bootloader taking about 3 seconds at start.
 unsigned long FEEDING_START_OFFSET = 4L * 1000L;
