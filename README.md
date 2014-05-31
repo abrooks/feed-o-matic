@@ -40,3 +40,8 @@ binaries.) The modified ld is provided to handler larger sized object files.
 
 For now the program size is small enough not to warrant an updated linker so we
 skip the Adafruit suggested ld.
+
+This project also leverages the PowerSwitch Tail II device. Documentation can
+be found here:
+
+  http://www.powerswitchtail.com/Pages/default.aspx
